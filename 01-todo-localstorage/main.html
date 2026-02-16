@@ -1,47 +1,31 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Project Name</title>
-    <meta name="description" content="Short project description." />
-    <link rel="stylesheet" href="styles.css" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Todo (LocalStorage)</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <header>
-        <h1>Project Name</h1>
-        <nav>
-            <a href="#about">About</a>
-            <a href="#usage">Usage</a>
-            <a href="#contact">Contact</a>
-        </nav>
+  <main class="app">
+    <header class="header">
+      <h1>Todo</h1>
+      <p class="sub">LocalStorage • Vanilla JS</p>
     </header>
 
-    <main>
-        <section id="about">
-            <h2>About</h2>
-            <p>Brief overview of the project.</p>
-        </section>
+    <form id="todoForm" class="form" autocomplete="off">
+      <input id="todoInput" type="text" placeholder="Add a task…" maxlength="120" />
+      <button id="addBtn" type="submit">Add</button>
+    </form>
 
-        <section id="usage">
-            <h2>Usage</h2>
-            <pre><code>npm install
-npm start</code></pre>
-        </section>
+    <section class="meta">
+      <span id="countText">0 items</span>
+      <button id="clearCompletedBtn" type="button">Clear completed</button>
+    </section>
 
-        <section id="features">
-            <h2>Features</h2>
-            <ul>
-                <li>Feature 1</li>
-                <li>Feature 2</li>
-            </ul>
-        </section>
-    </main>
+    <ul id="todoList" class="list" aria-live="polite"></ul>
+  </main>
 
-    <footer>
-        <p>&copy; 2026 Project Name</p>
-    </footer>
-
-    <script src="script.js" defer></script>
+  <script src="script.js"></script>
 </body>
 </html>
