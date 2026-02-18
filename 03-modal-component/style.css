@@ -1,0 +1,109 @@
+:root {
+  --bg: #0b0f14;
+  --card: rgba(17, 24, 39, 0.72);
+  --text: #e5e7eb;
+  --muted: #9ca3af;
+  --line: rgba(255,255,255,0.12);
+  --accent: #60a5fa;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  background: radial-gradient(1200px 600px at 20% 0%, rgba(96,165,250,0.18), transparent),
+              radial-gradient(900px 500px at 80% 20%, rgba(59,130,246,0.12), transparent),
+              var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.app { width: min(680px, 100%); }
+
+.header h1 { margin: 0; }
+.sub { margin: 6px 0 0; color: var(--muted); font-size: 14px; }
+
+.card {
+  margin-top: 16px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.35);
+  backdrop-filter: blur(10px);
+}
+
+button {
+  border: 1px solid var(--line);
+  background: rgba(96,165,250,0.16);
+  color: var(--text);
+  padding: 12px 14px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 16px;
+}
+button:hover { border-color: rgba(96,165,250,0.55); }
+button:active { transform: translateY(1px); }
+
+button.ghost { background: rgba(0,0,0,0.18); }
+
+.icon-btn {
+  background: transparent;
+  border: 1px solid transparent;
+  padding: 8px 10px;
+  border-radius: 10px;
+  color: var(--muted);
+}
+.icon-btn:hover {
+  border-color: var(--line);
+  color: var(--text);
+}
+
+/* Backdrop */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+.backdrop[hidden] {
+  display: none !important;
+}
+
+/* Modal */
+.modal {
+  width: min(520px, 100%);
+  background: rgba(17, 24, 39, 0.92);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  box-shadow: 0 18px 60px rgba(0,0,0,0.55);
+  padding: 16px;
+  outline: none;
+}
+
+.modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.modal-head h2 { margin: 0; font-size: 18px; }
+
+.modal-desc {
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 14px;
+}

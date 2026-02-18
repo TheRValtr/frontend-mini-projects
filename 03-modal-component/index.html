@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Modal Component</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app">
+    <header class="header">
+      <h1>Modal Component</h1>
+      <p class="sub">Accessible-ish modal: Esc, backdrop, focus return</p>
+    </header>
+
+    <section class="card">
+      <p>
+        This project demonstrates a modal pattern used across real products.
+      </p>
+      <button id="openModalBtn" type="button">Open modal</button>
+    </section>
+  </main>
+
+  <!-- Backdrop + Modal -->
+  <div id="backdrop" class="backdrop" hidden>
+    <section
+      id="modal"
+      class="modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modalTitle"
+      aria-describedby="modalDesc"
+      tabindex="-1"
+    >
+      <header class="modal-head">
+        <h2 id="modalTitle">Confirm action</h2>
+        <button id="closeModalBtn" class="icon-btn" type="button" aria-label="Close">✕</button>
+      </header>
+
+      <p id="modalDesc" class="modal-desc">
+        This is a reusable modal. It closes on Esc, clicking outside, or the close button.
+      </p>
+
+      <div class="modal-actions">
+        <button id="primaryBtn" type="button">Confirm</button>
+        <button id="secondaryBtn" type="button" class="ghost">Cancel</button>
+      </div>
+    </section>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
