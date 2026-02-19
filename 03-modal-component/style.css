@@ -4,7 +4,7 @@
   --text: #e5e7eb;
   --muted: #9ca3af;
   --line: rgba(255,255,255,0.12);
-  --accent: #60a5fa;
+  --accent: #608cfa;
 }
 
 * { box-sizing: border-box; }
@@ -68,12 +68,13 @@ button.ghost { background: rgba(0,0,0,0.18); }
   position: fixed;
   inset: 0;
   background: rgba(0,0,0,0.55);
-  display: grid;
+  display: ;
   place-items: center;
   padding: 24px;
 }
+
 .backdrop[hidden] {
-  display: none !important;
+  display: none;
 }
 
 /* Modal */

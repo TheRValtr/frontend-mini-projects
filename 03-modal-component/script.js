@@ -34,8 +34,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function openModal() {
     lastFocused = document.activeElement;
+    
+   backdrop.hidden = false;
 
-    backdrop.hidden = false;
+  
 
     // Focus the first focusable element inside the modal (close button usually)
     const focusable = getFocusable(modal);

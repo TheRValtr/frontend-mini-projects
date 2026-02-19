@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Image Carousel</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app">
+    <header class="header">
+      <h1>Image Carousel</h1>
+      <p class="sub">Arrows • Dots • Keyboard • Wrap-around</p>
+    </header>
+
+    <section class="carousel" aria-label="Image carousel">
+      <div class="frame">
+        <img id="slideImg" alt="Carousel slide" />
+      </div>
+
+      <button id="prevBtn" class="nav left" type="button" aria-label="Previous slide">‹</button>
+      <button id="nextBtn" class="nav right" type="button" aria-label="Next slide">›</button>
+
+      <div class="bottom">
+        <div id="dots" class="dots" aria-label="Slide navigation"></div>
+        <div class="meta">
+          <span id="countText">1 / 5</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <p class="note">
+        Tip: Use your keyboard ← → keys.
+      </p>
+      <label class="toggle">
+        <input id="autoplayToggle" type="checkbox" />
+        <span>Auto-play (every 4s)</span>
+      </label>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
