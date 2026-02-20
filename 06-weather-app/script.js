@@ -43,65 +43,151 @@ async function runSearch(query) {
 }
 
 async function geocode(query) {
+  let q = (query || "").trim().replace(/\s+/g, " ");
+  q = q.replace(/^['"]+|['"]+$/g, "");
+
+  // Parse "City, State/Country" style input
+  const parts = q.split(",").map(s => s.trim()).filter(Boolean);
+  const city = parts[0] || q;
+  const qualifiers = parts.slice(1); // e.g. ["Florida"] or ["California"] or ["Texas"]
+
+  // 1) Try full query first
+  let results = await geocodeRequest(q);
+
+  // 2) If that fails, fall back to city-only search
+  if (results.length === 0) {
+    results = await geocodeRequest(city);
+    if (results.length === 0) {
+      throw new Error(`No results for "${q}". Try just the city name or separete them with ( , )`);
+    }
+  }
+
+  // 3) Score candidates using qualifiers + city tokens
+  const tokens = [
+    ...city.toLowerCase().split(/\s+/).filter(Boolean),
+    ...qualifiers.flatMap(x => x.toLowerCase().split(/\s+/).filter(Boolean)),
+  ];
+
+  // Expand common US state abbreviations to full names (helps "Miami, FL", "Paris, TX", "San Jose, CA")
+  const US_STATES = {
+    AL:"alabama", AK:"alaska", AZ:"arizona", AR:"arkansas", CA:"california", CO:"colorado", CT:"connecticut",
+    DE:"delaware", FL:"florida", GA:"georgia", HI:"hawaii", ID:"idaho", IL:"illinois", IN:"indiana",
+    IA:"iowa", KS:"kansas", KY:"kentucky", LA:"louisiana", ME:"maine", MD:"maryland", MA:"massachusetts",
+    MI:"michigan", MN:"minnesota", MS:"mississippi", MO:"missouri", MT:"montana", NE:"nebraska", NV:"nevada",
+    NH:"new hampshire", NJ:"new jersey", NM:"new mexico", NY:"new york", NC:"north carolina", ND:"north dakota",
+    OH:"ohio", OK:"oklahoma", OR:"oregon", PA:"pennsylvania", RI:"rhode island", SC:"south carolina",
+    SD:"south dakota", TN:"tennessee", TX:"texas", UT:"utah", VT:"vermont", VA:"virginia", WA:"washington",
+    WV:"west virginia", WI:"wisconsin", WY:"wyoming"
+  };
+
+  const expandedTokens = [];
+  for (const t of tokens) {
+    expandedTokens.push(t);
+    const up = t.toUpperCase();
+    if (US_STATES[up]) expandedTokens.push(US_STATES[up]);
+    if (t === "usa" || t === "us" || t === "united" || t === "states") {
+      expandedTokens.push("united");
+      expandedTokens.push("states");
+      expandedTokens.push("united states");
+      expandedTokens.push("usa");
+      expandedTokens.push("us");
+    }
+  }
+
+  const scored = results.map((r) => {
+    const hay = [
+      r.name,
+      r.admin1,
+      r.admin2,
+      r.admin3,
+      r.country,
+      r.country_code
+    ].filter(Boolean).join(" ").toLowerCase();
+
+    let score = 0;
+
+    // Strongly prefer city name match
+    if ((r.name || "").toLowerCase() === city.toLowerCase()) score += 10;
+
+    // Qualifier matches (state/country) matter a lot
+    for (const t of expandedTokens) {
+      if (t.length < 2) continue;
+      if (hay.includes(t)) score += 3;
+    }
+
+    // Prefer higher population if available
+    if (typeof r.population === "number") {
+      score += Math.min(5, Math.log10(r.population + 1));
+    }
+
+    return { r, score };
+  });
+
+  scored.sort((a, b) => b.score - a.score);
+  const best = scored[0].r;
+
+  return {
+    name: best.name,
+    country: best.country,
+    admin1: best.admin1,
+    lat: best.latitude,
+    lon: best.longitude,
+    timezone: best.timezone || "auto",
+  };
+}
+
+async function geocodeRequest(name) {
   const url = new URL(GEO_URL);
-  url.searchParams.set("name", query);
-  url.searchParams.set("count", "1");
+  url.searchParams.set("name", name);
+  url.searchParams.set("count", "10");
   url.searchParams.set("language", "en");
   url.searchParams.set("format", "json");
 
   const res = await fetch(url.toString());
   if (!res.ok) throw new Error("Geocoding request failed.");
   const data = await res.json();
-
-  if (!data.results || data.results.length === 0) {
-    throw new Error(`No results for "${query}". Try adding country/state.`);
-  }
-
-  const r = data.results[0];
-  return {
-    name: r.name,
-    country: r.country,
-    admin1: r.admin1,
-    lat: r.latitude,
-    lon: r.longitude,
-    timezone: r.timezone || "auto",
-  };
+  return Array.isArray(data.results) ? data.results : [];
 }
 
 async function fetchWeather(place) {
   setLoading(true, "Fetching weather…");
-  hideError();
+  try {
+    const useC = els.unitToggle.checked;
 
-  const useC = els.unitToggle.checked;
+    const url = new URL(WX_URL);
+    url.searchParams.set("latitude", String(place.lat));
+    url.searchParams.set("longitude", String(place.lon));
+    url.searchParams.set("current", "temperature_2m,wind_speed_10m,weather_code");
+    url.searchParams.set("timezone", "auto");
 
-  const url = new URL(WX_URL);
-  url.searchParams.set("latitude", String(place.lat));
-  url.searchParams.set("longitude", String(place.lon));
-  url.searchParams.set("current", "temperature_2m,wind_speed_10m,weather_code");
-  url.searchParams.set("timezone", "auto");
-  // Units
-  url.searchParams.set("temperature_unit", useC ? "celsius" : "fahrenheit");
-  url.searchParams.set("wind_speed_unit", "mph");
+    // Units
+    url.searchParams.set("temperature_unit", useC ? "celsius" : "fahrenheit");
+    url.searchParams.set("wind_speed_unit", "mph");
 
-  const res = await fetch(url.toString());
-  if (!res.ok) throw new Error("Weather request failed.");
-  const data = await res.json();
+    const res = await fetch(url.toString());
+    if (!res.ok) throw new Error("Weather request failed.");
+    const data = await res.json();
 
-  if (!data.current) throw new Error("Weather data missing.");
-  const cur = data.current;
+    if (!data.current) throw new Error("Weather data missing.");
+    const cur = data.current;
 
-  const label = codeToLabel(cur.weather_code);
-
-  render({
-    placeLabel: formatPlace(place),
-    temp: cur.temperature_2m,
-    tempUnit: useC ? "°C" : "°F",
-    wind: cur.wind_speed_10m,
-    windUnit: "mph",
-    codeLabel: label,
-    time: cur.time,
-  });
+    render({
+      placeLabel: formatPlace(place),
+      temp: cur.temperature_2m,
+      tempUnit: useC ? "°C" : "°F",
+      wind: cur.wind_speed_10m,
+      windUnit: "mph",
+      codeLabel: codeToLabel(cur.weather_code),
+      time: cur.time,
+    });
+  } catch (err) {
+    showError(err?.message || "Couldn’t load weather.");
+  } finally {
+    setLoading(false);
+  }
 }
+
+
 
 function render(model) {
   els.panel.innerHTML = `
