@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Weather App</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app">
+    <header class="header">
+      <h1>Weather</h1>
+      <p class="sub">Fetch API • Loading/Error states • No API key</p>
+    </header>
+
+    <form id="form" class="card form" autocomplete="off">
+      <input id="q" type="text" placeholder="Search city (e.g., Miami, FL)" maxlength="80" />
+      <button id="searchBtn" type="submit">Search</button>
+      <label class="unit">
+        <span>°F</span>
+        <input id="unitToggle" type="checkbox" />
+        <span>°C</span>
+      </label>
+    </form>
+
+    <section id="panel" class="card panel" aria-live="polite">
+      <p class="muted">Type a city and press Search.</p>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
