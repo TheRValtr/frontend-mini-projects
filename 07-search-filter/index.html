@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Search & Filter</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app">
+    <header class="header">
+      <h1>Search & Filter</h1>
+      <p class="sub">Debounce • Highlight matches • Empty state</p>
+    </header>
+
+    <section class="card controls">
+      <input id="q" type="text" placeholder="Search name, role, or city…" maxlength="60" />
+      <select id="role">
+        <option value="all">All roles</option>
+        <option value="Engineer">Engineer</option>
+        <option value="Designer">Designer</option>
+        <option value="Marketer">Marketer</option>
+        <option value="Ops">Ops</option>
+      </select>
+      <span id="count" class="count">0 results</span>
+    </section>
+
+    <section class="card">
+      <ul id="list" class="list" aria-live="polite"></ul>
+      <p id="empty" class="empty" hidden>No results. Try a different search.</p>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
