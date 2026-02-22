@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dark Mode Toggle</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app">
+    <header class="header">
+      <h1>Theme Toggle</h1>
+      <p class="sub">CSS variables • localStorage • prefers-color-scheme</p>
+    </header>
+
+    <section class="card">
+      <div class="row">
+        <div>
+          <div class="title">Appearance</div>
+          <div class="muted">Toggle theme and persist your choice.</div>
+        </div>
+
+        <label class="switch" aria-label="Toggle dark mode">
+          <input id="themeToggle" type="checkbox" />
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <hr />
+
+      <div class="demo">
+        <div class="pill">Badge</div>
+        <button class="btn" type="button">Button</button>
+        <input class="input" type="text" placeholder="Input field…" />
+      </div>
+
+      <p class="muted" id="statusText"></p>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
