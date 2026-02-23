@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tabs Component</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app">
+    <header class="header">
+      <h1>Tabs</h1>
+      <p class="sub">ARIA roles • Keyboard nav • Vanilla JS</p>
+    </header>
+
+    <section class="card">
+      <div class="tabs" role="tablist" aria-label="Demo tabs">
+        <button class="tab" role="tab" aria-selected="true" aria-controls="panel-1" id="tab-1" tabindex="0">
+          Overview
+        </button>
+        <button class="tab" role="tab" aria-selected="false" aria-controls="panel-2" id="tab-2" tabindex="-1">
+          Specs
+        </button>
+        <button class="tab" role="tab" aria-selected="false" aria-controls="panel-3" id="tab-3" tabindex="-1">
+          Notes
+        </button>
+      </div>
+
+      <div class="panels">
+        <section class="panel" role="tabpanel" id="panel-1" aria-labelledby="tab-1">
+          <h2>Overview</h2>
+          <p>Tabs are a common UI pattern. This component supports mouse + keyboard navigation.</p>
+        </section>
+
+        <section class="panel" role="tabpanel" id="panel-2" aria-labelledby="tab-2" hidden>
+          <h2>Specs</h2>
+          <ul>
+            <li>Arrow keys switch tabs</li>
+            <li>Home/End jump to first/last</li>
+            <li>ARIA attributes update correctly</li>
+          </ul>
+        </section>
+
+        <section class="panel" role="tabpanel" id="panel-3" aria-labelledby="tab-3" hidden>
+          <h2>Notes</h2>
+          <p>This is “accessible-ish” and covers the most important behaviors recruiters care about.</p>
+        </section>
+      </div>
+    </section>
+
+    <section class="card">
+      <p class="muted">Try: ← → Home End (when a tab is focused)</p>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
