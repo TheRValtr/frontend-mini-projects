@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Infinite Scroll</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app">
+    <header class="header">
+      <h1>Infinite Scroll</h1>
+      <p class="sub">IntersectionObserver • Pagination • Loading/Error/Retry</p>
+    </header>
+
+    <section class="card controls">
+      <input id="q" type="text" placeholder="Filter posts (title/body)..." maxlength="60" />
+      <span id="meta" class="meta">0 loaded</span>
+    </section>
+
+    <section class="card">
+      <ul id="list" class="list" aria-live="polite"></ul>
+
+      <div id="status" class="status" aria-live="polite"></div>
+
+      <!-- Sentinel element for IntersectionObserver -->
+      <div id="sentinel" class="sentinel" aria-hidden="true"></div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
