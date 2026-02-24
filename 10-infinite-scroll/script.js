@@ -21,7 +21,7 @@ let filterQ = "";
 const observer = new IntersectionObserver((entries) => {
   const first = entries[0];
   if (first.isIntersecting) loadNextPage();
-}, { rootMargin: "400px" });
+}, { rootMargin: "500px" });
 
 observer.observe(els.sentinel);
 
