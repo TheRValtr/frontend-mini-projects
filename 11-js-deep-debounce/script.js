@@ -15,3 +15,14 @@ function debounce(fn, delay) {
 
   };
 }
+const input = document.getElementById("search");
+const log = document.getElementById("log");
+
+function searchHandler(event) {
+  const value = event.target.value;
+  log.textContent = "Searching for: " + value;
+}
+
+const debouncedSearch = debounce(searchHandler, 500);
+
+input.addEventListener("input", debouncedSearch);
